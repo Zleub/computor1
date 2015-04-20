@@ -6,16 +6,17 @@
 -- /ddddy:oddddddddds:sddddd/ By adebray - adebray
 -- sdddddddddddddddddddddddds
 -- sdddddddddddddddddddddddds Created: 2015-03-19 10:56:17
--- :ddddddddddhyyddddddddddd: Modified: 2015-03-19 16:21:31
+-- :ddddddddddhyyddddddddddd: Modified: 2015-04-20 12:54:45
 --  odddddddd/`:-`sdddddddds
 --   +ddddddh`+dh +dddddddo
 --    -sdddddh///sdddddds-
 --      .+ydddddddddhs/.
 --          .-::::-`
 
+if not arg[1] then print('Usage: lua computorv1 [exp]') return end
 print("arg[1]: "..arg[1])
 
-nbr = "[%d%.]+"
+nbr = "[-%d%.]+"
 exp = "X^"..nbr
 
 getE = function(self)
@@ -157,8 +158,12 @@ Members = {
 		elseif bigone.b == 0 then
 			print("There is no solution. Dividing by 0.")
 			return ;
-		elseif #bigone == 1 and bigone[1].Exposant == 0 then
-			print("The solution is: "..bigone[1].Member)
+		elseif #bigone == 1 then
+			if bigone[1].Member ~= 0 then
+				print("There is no solution.")
+			else
+				print("The solution is !! : "..bigone[1].Member)
+			end
 			return
 		end
 		print("The solution is: "..-bigone.c / bigone.b)
@@ -175,10 +180,16 @@ Members = {
 			print( (-bigone.b + sqrt(d)) / (2 * bigone.a))
 			print( (-bigone.b - sqrt(d)) / (2 * bigone.a))
 		elseif d == 0 then
-			print("The solution is:")
+			print("Discriminant is strictly 0. The solution is:")
 			print(-(bigone.b / 2 * bigone.a))
 		else
-			print("There is no solution.")
+			local tmp1 = -bigone.b
+			local tmp2 = 2 * bigone.a
+			d = -d
+
+			print("Discriminant is strictly negative.")
+			print(tmp1.."/".. tmp2.." + i√("..d..") / "..tmp2)
+			print(tmp1.."/".. tmp2.." - i√("..d..") / "..tmp2)
 		end
 	end,
 	Resolve = function (self, bigone)
